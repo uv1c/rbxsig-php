@@ -1,0 +1,41 @@
+{
+  "name": "uv1c/rbxsig-php",
+  "description": "PHP library for generating Roblox signing keys and signing Lua scripts.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "roblox",
+    "rbxsig",
+    "signing",
+    "rsa"
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-openssl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5 || ^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "RobloxSigner\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RobloxSigner\\Tests\\": "tests/"
+    }
+  },
+  "bin": [
+    "bin/rbxsign.php"
+  ],
+  "scripts": {
+    "test": "@php vendor/bin/phpunit"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

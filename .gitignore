@@ -1,0 +1,10 @@
+/vendor/
+/keys/
+/.phpunit.cache/
+/.phpunit.result.cache
+/composer.lock
+
+# Never commit signing keys.
+*.pem
+PrivateKey*
+PublicKeyBlob*
