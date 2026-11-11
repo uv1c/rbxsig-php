@@ -6,6 +6,7 @@ namespace RobloxSigner;
 
 use InvalidArgumentException;
 use RuntimeException;
+use RobloxSigner\Keys\OpenSslPublicKeyLoader;
 
 /**
  * Verifies signed script output against a public key.
@@ -101,7 +102,7 @@ final class Verifier
             $pem = $contents;
         }
 
-        $publicKey = @openssl_pkey_get_public($pem);
+        $publicKey = OpenSslPublicKeyLoader::load($pem);
 
         if ($publicKey === false) {
             throw new InvalidArgumentException('Invalid public key.');

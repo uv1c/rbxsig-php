@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use RobloxSigner\Cli\Application;
 use RobloxSigner\Cli\CommandLineParser;
 use RobloxSigner\Keys\KeyGenerationService;
+use RobloxSigner\Keys\OpenSslPublicKeyLoader;
 use RobloxSigner\Tests\Support\Environment;
 
 final class PipelineTest extends TestCase
@@ -55,7 +56,7 @@ final class PipelineTest extends TestCase
         );
 
         $privateDetails = openssl_pkey_get_details(openssl_pkey_get_private($privateKeyPem));
-        $publicDetails = openssl_pkey_get_details(openssl_pkey_get_public($publicKeyPem));
+        $publicDetails = openssl_pkey_get_details(OpenSslPublicKeyLoader::load($publicKeyPem));
         self::assertIsArray($privateDetails);
         self::assertIsArray($publicDetails);
         self::assertSame(1024, $privateDetails['bits']);

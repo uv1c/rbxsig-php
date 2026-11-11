@@ -6,6 +6,7 @@ namespace RobloxSigner\Tests\Keys;
 
 use PHPUnit\Framework\TestCase;
 use RobloxSigner\Keys\DerEncoder;
+use RobloxSigner\Keys\OpenSslPublicKeyLoader;
 use RobloxSigner\Keys\Pkcs1PemEncoder;
 use RobloxSigner\Keys\RsaCrtExponents;
 use RobloxSigner\Keys\RsaCrtParameters;
@@ -44,16 +45,17 @@ final class Pkcs1PemEncoderTest extends TestCase
     {
         $pem = TestKeys::publicKeyPem();
 
-        self::assertStringStartsWith("-----BEGIN PUBLIC KEY-----\n", $pem);
-        self::assertStringEndsWith("-----END PUBLIC KEY-----\n", $pem);
+        self::assertStringStartsWith("-----BEGIN RSA PUBLIC KEY-----\n", $pem);
+        self::assertStringEndsWith("-----END RSA PUBLIC KEY-----\n", $pem);
         self::assertStringNotContainsString("\r", $pem);
         $this->assertPemLinesAreWrapped($pem);
 
-        $key = openssl_pkey_get_public($pem);
+        $key = OpenSslPublicKeyLoader::load($pem);
         self::assertNotFalse($key);
 
         $details = openssl_pkey_get_details($key);
         self::assertIsArray($details);
+        self::assertSame(OPENSSL_KEYTYPE_RSA, $details['type']);
         self::assertSame(2048, $details['bits']);
     }
 

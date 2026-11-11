@@ -54,7 +54,7 @@ final class KeyGenerator
             );
         }
 
-        $publicKey = @openssl_pkey_get_public($keyPair->getPublicKeyPem());
+        $publicKey = OpenSslPublicKeyLoader::load($keyPair->getPublicKeyPem());
         if ($publicKey === false) {
             throw new RuntimeException(
                 'Generated public key could not be parsed by OpenSSL: ' . $this->opensslErrors()
