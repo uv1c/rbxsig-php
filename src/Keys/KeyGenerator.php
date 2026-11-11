@@ -48,10 +48,17 @@ final class KeyGenerator
     private function selfCheck(KeyPair $keyPair): void
     {
         $privateKey = @openssl_pkey_get_private($keyPair->getPrivateKeyPem());
-        $publicKey = @openssl_pkey_get_public($keyPair->getPublicKeyPem());
+        if ($privateKey === false) {
+            throw new RuntimeException(
+                'Generated private key could not be parsed by OpenSSL: ' . $this->opensslErrors()
+            );
+        }
 
-        if ($privateKey === false || $publicKey === false) {
-            throw new RuntimeException('Generated key pair could not be parsed by OpenSSL.');
+        $publicKey = @openssl_pkey_get_public($keyPair->getPublicKeyPem());
+        if ($publicKey === false) {
+            throw new RuntimeException(
+                'Generated public key could not be parsed by OpenSSL: ' . $this->opensslErrors()
+            );
         }
 
         $privateDetails = openssl_pkey_get_details($privateKey);
@@ -101,5 +108,16 @@ final class KeyGenerator
         if ($verified !== 1) {
             throw new RuntimeException('Generated key pair failed the signing self-check.');
         }
+    }
+
+    private function opensslErrors(): string
+    {
+        $errors = [];
+
+        while (($error = openssl_error_string()) !== false) {
+            $errors[] = $error;
+        }
+
+        return $errors === [] ? 'unknown OpenSSL error' : implode('; ', $errors);
     }
 }
