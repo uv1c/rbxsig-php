@@ -6,5 +6,4 @@
 
 # Never commit signing keys.
 *.pem
-PrivateKey*
 PublicKeyBlob*
