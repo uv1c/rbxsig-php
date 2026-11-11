@@ -69,7 +69,7 @@ A CSP public-key blob is a 20-byte header followed by the RSA modulus. The
 header starts with:
 
 ```text
-06 02 00 00 00 A4 00 00 52 53 41 31
+42 67 49 41 41
 ```
 
 In Base64, that prefix begins with `BgIAA...`.
