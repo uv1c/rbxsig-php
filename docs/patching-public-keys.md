@@ -186,7 +186,7 @@ php -r "file_put_contents('keys/PublicKeyBlob.bin', base64_decode(trim(file_get_
 Search for:
 
 ```text
-06 02 00 00 00 A4 00 00 52 53 41 31
+42 67 49 41 41
 ```
 
 Select the entire old blob (148 bytes for 1024-bit, 276 bytes for 2048-bit; the
