@@ -56,6 +56,11 @@ final class DerEncoderTest extends TestCase
         );
     }
 
+    public function testEncodesBitString(): void
+    {
+        self::assertSame("\x03\x03\x00\xaa\xbb", $this->encoder->encodeBitString("\xaa\xbb"));
+    }
+
     public function testEncodesLongSequenceLength(): void
     {
         $contents = str_repeat("\x01", 128);

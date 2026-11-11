@@ -7,7 +7,8 @@ namespace RobloxSigner\Keys;
 final class Pkcs1PemEncoder
 {
     private const PRIVATE_KEY_LABEL = 'RSA PRIVATE KEY';
-    private const PUBLIC_KEY_LABEL = 'RSA PUBLIC KEY';
+    private const PUBLIC_KEY_LABEL = 'PUBLIC KEY';
+    private const RSA_ENCRYPTION_OID = "\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01";
     private const TWO_PRIME_VERSION = "\0";
     private const PEM_LINE_LENGTH = 64;
     private const LINE_FEED = "\n";
@@ -39,8 +40,13 @@ final class Pkcs1PemEncoder
     public function encodePublicKey(RsaPublicKey $publicKey): string
     {
         $integers = [$publicKey->getModulus(), $publicKey->getPublicExponent()];
+        $rsaPublicKey = $this->encodeIntegerSequence($integers);
+        $algorithmIdentifier = $this->derEncoder->encodeSequence(self::RSA_ENCRYPTION_OID . "\x05\x00");
+        $subjectPublicKeyInfo = $this->derEncoder->encodeSequence(
+            $algorithmIdentifier . $this->derEncoder->encodeBitString($rsaPublicKey)
+        );
 
-        return $this->wrapInPem(self::PUBLIC_KEY_LABEL, $this->encodeIntegerSequence($integers));
+        return $this->wrapInPem(self::PUBLIC_KEY_LABEL, $subjectPublicKeyInfo);
     }
 
     /** @param string[] $unsignedBigEndianIntegers */

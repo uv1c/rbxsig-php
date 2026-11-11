@@ -82,7 +82,7 @@ Generated files:
 
 ```text
 keys/PrivateKey.pem       PKCS#1 private key (keep secret)
-keys/PublicKey.pem        PKCS#1 public key (for verification/tools)
+keys/PublicKey.pem        standard PEM public key (for verification/tools)
 keys/PublicKeyBlob.txt    base64-encoded Windows CSP PUBLICKEYBLOB
 ```
 

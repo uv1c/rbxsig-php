@@ -19,7 +19,7 @@ final class KeyGeneratorTest extends TestCase
 
         self::assertSame($keySize->getBits(), $keyPair->getBits());
         self::assertStringStartsWith("-----BEGIN RSA PRIVATE KEY-----\n", $keyPair->getPrivateKeyPem());
-        self::assertStringStartsWith("-----BEGIN RSA PUBLIC KEY-----\n", $keyPair->getPublicKeyPem());
+        self::assertStringStartsWith("-----BEGIN PUBLIC KEY-----\n", $keyPair->getPublicKeyPem());
         self::assertSame(20 + intdiv($keySize->getBits(), 8), strlen($keyPair->getPublicKeyBlob()));
 
         $privateKey = openssl_pkey_get_private($keyPair->getPrivateKeyPem());

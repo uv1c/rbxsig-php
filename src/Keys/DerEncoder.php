@@ -29,6 +29,13 @@ final class DerEncoder
         return self::TAG_SEQUENCE . $this->encodeLength(strlen($contents)) . $contents;
     }
 
+    public function encodeBitString(string $contents): string
+    {
+        $content = "\0" . $contents;
+
+        return "\x03" . $this->encodeLength(strlen($content)) . $content;
+    }
+
     private function withoutLeadingZeros(string $bytes): string
     {
         $trimmed = ltrim($bytes, "\0");

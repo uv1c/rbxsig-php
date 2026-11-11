@@ -158,7 +158,7 @@ v2020    -> rbxsig4
 flowchart LR
     rsa["RSA key pair<br/>(OpenSSL)"]
     priv["PrivateKey.pem<br/>PKCS#1 RSA PRIVATE KEY"]
-    pub["PublicKey.pem<br/>PKCS#1 RSA PUBLIC KEY"]
+    pub["PublicKey.pem<br/>SubjectPublicKeyInfo PUBLIC KEY"]
     blob["PublicKeyBlob.txt<br/>Base64 Windows CAPI PUBLICKEYBLOB"]
     signer["Signer / signing server"]
     verifier["Verifier / local tools"]
@@ -172,9 +172,9 @@ flowchart LR
 - Roblox's legacy clients use Windows CryptoAPI, so the public key is often
   distributed as a **CSP `PUBLICKEYBLOB`**. This library writes the Base64 form
   used by key-generation tools.
-- The private and public PEM files use the older **PKCS#1** labels
-  (`RSA PRIVATE KEY` / `RSA PUBLIC KEY`) so they are easy to import into the
-  tools that expect Roblox-style keys.
+- The private PEM uses the **PKCS#1** `RSA PRIVATE KEY` label. The public PEM
+  uses the standard **SubjectPublicKeyInfo** `PUBLIC KEY` format for broad
+  OpenSSL compatibility. Roblox clients use the separate CSP blob.
 - 1024-bit keys belong to the older era; 2048-bit keys are the modern default.
   The wrapper and key size are related in practice, but the library treats the
   key size as advisory so it can also be used for compatibility testing.

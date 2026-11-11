@@ -44,8 +44,8 @@ final class Pkcs1PemEncoderTest extends TestCase
     {
         $pem = TestKeys::publicKeyPem();
 
-        self::assertStringStartsWith("-----BEGIN RSA PUBLIC KEY-----\n", $pem);
-        self::assertStringEndsWith("-----END RSA PUBLIC KEY-----\n", $pem);
+        self::assertStringStartsWith("-----BEGIN PUBLIC KEY-----\n", $pem);
+        self::assertStringEndsWith("-----END PUBLIC KEY-----\n", $pem);
         self::assertStringNotContainsString("\r", $pem);
         $this->assertPemLinesAreWrapped($pem);
 
