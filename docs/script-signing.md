@@ -50,21 +50,37 @@ Signing and verification are asymmetric:
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Server as Signing server
-    participant Store as Script/join-script response
-    participant Client as Roblox client
+    participant Server as Signing Server
+    participant Store as Script / Join-Script Response
+    participant Client as Roblox Client
 
-    Server->>Server: Build exact payload bytes
-    Server->>Server: RSA-SHA1 sign with PrivateKey.pem
-    Server->>Store: token + payload
-    Store-->>Client: token + payload
-    Client->>Client: Find and decode signature token
-    Client->>Client: Rebuild payload = all bytes after token
-    Client->>Client: RSA-SHA1 verify with embedded public key
-    alt signature valid
-        Client->>Client: Accept and execute the script
-    else signature invalid
+    Note over Server: Prepare the script response for signing
+
+    Server->>Server: Build exact payload bytes<br/>Asset line + line ending + script contents
+    Server->>Server: Generate RSA-SHA1 signature<br/>Using PrivateKey.pem
+    Server->>Server: Encode signature into token format
+    Server->>Store: Attach signature token to original payload
+
+    Note over Store,Client: Deliver the signed response
+
+    Store-->>Client: Return signature token + payload
+
+    Note over Client: Extract and verify the received signature
+
+    Client->>Client: Locate the signature token in the response
+    Client->>Client: Decode the signature token into raw signature bytes
+    Client->>Client: Reconstruct the original payload<br/>All bytes following the signature token
+    Client->>Client: Calculate RSA-SHA1 verification<br/>Using the reconstructed payload
+    Client->>Client: Verify signature using embedded public key
+
+    alt Signature is valid
+        Note over Client: Payload integrity and signature authenticity verified
+        Client->>Client: Accept the signed response
+        Client->>Client: Execute the received script
+    else Signature is invalid
+        Note over Client: Signature verification failed
         Client->>Client: Reject the response
+        Client->>Client: Do not execute the script
     end
 ```
 
