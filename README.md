@@ -1,4 +1,4 @@
-# <img src="assets/icon.png" width="32" height="32" alt="rbxsig-php icon"> rbxsig-php
+# <img src="assets/icon.png" width="16" height="16" alt="rbxsig-php icon"> rbxsig-php
 
 One PHP library for two jobs:
 
