@@ -10,20 +10,24 @@ Signing is RSA/SHA-1 over the exact payload that follows the signature token. Th
 ## How Roblox script signing works
 
 ```mermaid
-sequenceDiagram
-    participant Server as Signing server
-    participant Client as Roblox client
 
-    Server->>Server: payload = asset line + line ending + script
-    Server->>Server: RSA-SHA1 sign with PrivateKey.pem
-    Server->>Client: --rbxsig2%signature% + payload
-    Client->>Client: decode token, hash payload
-    Client->>Client: verify with embedded public key
-    alt valid
-        Client->>Client: execute script
-    else invalid
-        Client->>Client: reject response
+sequenceDiagram
+    participant S as Signing Server
+    participant C as Roblox Client
+
+    S->>S: Build payload<br/>Asset line + newline + script
+    S->>S: Sign payload using RSA-SHA1<br/>PrivateKey.pem
+    S->>C: Send --rbxsig2%signature% + payload
+
+    C->>C: Decode signature token
+    C->>C: Hash payload & verify signature<br/>Using embedded public key
+
+    alt Signature valid
+        C->>C: Execute script
+    else Signature invalid
+        C->>C: Reject response
     end
+
 ```
 
 The token and its wrapper are **not** signed; the bytes after the closing `%`
